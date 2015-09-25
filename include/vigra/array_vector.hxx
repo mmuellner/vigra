@@ -702,11 +702,12 @@ inline void ArrayVector<T, Alloc>::pop_back()
 template <class T, class Alloc>
 inline void ArrayVector<T, Alloc>::push_back( value_type const & t )
 {
+    size_type old_capacity = this->capacity_;
     pointer old_data = reserveImpl(false);
     alloc_.construct(this->data_ + this->size_, t);
     // deallocate old data _after_ construction of new element, so that
     // 't' can refer to the old data as in 'push_back(front())'
-    deallocate(old_data, this->size_, this->capacity_);
+    deallocate(old_data, this->size_, old_capacity);
     ++this->size_;
 }
 
